@@ -1,0 +1,23 @@
+query GetAllPosts{
+  GetAllPosts{
+    id
+    Title
+    Content
+    Author
+    Hero
+    Published_At
+    Updated_At
+  }
+}
+
+query GetOnePost{
+  GetOnePost(id:11) {
+    id
+    Title
+    Content
+    Author
+    Hero
+    Published_At
+    Updated_At
+  }
+}

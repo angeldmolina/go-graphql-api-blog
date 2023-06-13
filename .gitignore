@@ -1,0 +1,21 @@
+# macOS
+**/.DS_Store
+
+# Builds
+bin/
+build/
+tmp/
+server
+server.exe
+go-blog-graphql
+go-blog-graphql.exe
+
+# logs
+*.log
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Test
+coverage/

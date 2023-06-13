@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  server:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/src/app
+    command: air ./server.go -b 0.0.0.0
+    depends_on:
+      - db
+  db:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-postgres}
+      - POSTGRES_HOST_AUTH_METHOD="trust"
+      - POSTGRES_DB_SSLMODE=${POSTGRES_DB_SSLMODE:-disable}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-disable} ${POSTGRES_DB_NAME:-postgres}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - .env
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    restart: unless-stopped
+    environment:
+      - CB_SERVER_NAME="Blog DB Administrator"
+      - CB_ADMIN_NAME=${CB_ADMIN_NAME:-admin}
+      - CB_ADMIN_PASSWORD=${CB_ADMIN_PASSWORD:-Admin123}
+    ports:
+      - "8200:8978"
+    volumes:
+      - cloudbeaver-data:/opt/cloudbeaver/workspace
+    depends_on:
+      - db
+
+volumes:
+  postgres-db:
+  cloudbeaver-data:

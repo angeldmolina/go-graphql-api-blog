@@ -1,0 +1,42 @@
+# Types
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  created_At: String!
+  updated_At: String!
+
+  # It's required that every blog post has an author
+  author: Author!
+}
+
+type Author {
+  id: ID!
+  name: String!
+
+  # An author can have more than one blog post
+  posts: [Post]
+}
+
+type Query {
+  # Return all blog posts
+  getAllPosts: [Post!]!
+  # Returns a single blog post given it's ID
+  getPostByID(id: ID!): Post!
+  # Returns all the post created by the given author's ID
+  getPostsByAuthorId(id: ID!): Post!
+}
+
+input EditedPost {
+  title: String!
+  content: String!
+  created_At: String
+  updated_At: String
+}
+
+type Mutation {
+  addPost(authorId: ID!, input: EditedPost!): Post!
+  updatePost(id: ID!, input: EditedPost!): Post!
+  addAuthor(name: String!): Author!
+  updateAuthor(id: ID!, name: String!): Author!
+}

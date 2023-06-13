@@ -1,0 +1,28 @@
+mutation createPost {
+  CreatePost(
+    input: {
+      Title: "How to Build GraphQL API using Go and MySQL",
+      Content: "We will create a Build GraphQL API using \
+      the MySQL database server to perform the different operations \
+      using the GraphQL API.",
+      Author: "Rose Chege",
+      Hero: \
+      "https://cdn.pixabay.com/photo/2016/12/28/09/36/web-1935737_1280.png",
+    })
+  {
+    id
+    Title
+  }
+}
+
+mutation UpdatePost {
+  UpdatePost(PostId:10 input:{
+
+    Title: "How to Build GraphQL API using MongoDB and Go"
+    Content : "This guide will help you create a Go MongoDB API"
+  }){
+    id
+    Title
+    Content
+  }
+}

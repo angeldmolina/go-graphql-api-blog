@@ -1,0 +1,15 @@
+# Files
+.editorconfig
+.gitignore
+.env.*
+Dockerfile
+LICENSE
+**/*.md
+*.out
+
+# Folders
+.git/
+.github/
+.vscode/
+build/
+bin/
