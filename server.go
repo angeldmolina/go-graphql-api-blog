@@ -3,6 +3,7 @@ package main
 import (
 	"go-blog-graphql/database"
 	"go-blog-graphql/graph"
+	"go-blog-graphql/graph/generated"
 	"log"
 	"net/http"
 	"os"
@@ -21,11 +22,14 @@ func main() {
 
 	database.ConnectDb()
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	resolver := graph.NewResolver(database.DB) // Pass the database connection to the resolver
+
+	// Create the GraphQL server with the generated schema and resolver
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	log.Printf("Connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
