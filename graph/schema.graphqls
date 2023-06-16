@@ -1,42 +1,60 @@
-# Types
 type Post {
   id: ID!
   title: String!
   content: String!
-  created_At: String!
-  updated_At: String!
-
-  # It's required that every blog post has an author
+  createdAt: String!
+  updatedAt: String!
   author: Author!
+  likes: Int!
+  comments: [Comment!]!
 }
 
 type Author {
   id: ID!
   name: String!
+  email: String!
+  bio: String
+  website: String
+  posts: [Post!]!
+}
 
-  # An author can have more than one blog post
-  posts: [Post]
+type Comment {
+  id: ID!
+  content: String!
+  createdAt: String!
+  updatedAt: String!
+  author: Author!
+  likes: Int!
 }
 
 type Query {
-  # Return all blog posts
   getAllPosts: [Post!]!
-  # Returns a single blog post given it's ID
   getPostByID(id: ID!): Post!
-  # Returns all the post created by the given author's ID
-  getPostsByAuthorId(id: ID!): Post!
+  getPostsByAuthorId(authorId: ID!): [Post!]!
+  getAllComments: [Comment!]!
+  getCommentByID(id: ID!): Comment!
+  getCommentsByAuthorId(authorId: ID!): [Comment!]!
 }
 
 input EditedPost {
   title: String!
   content: String!
-  created_At: String
-  updated_At: String
+}
+
+input EditedComment {
+  content: String!
 }
 
 type Mutation {
   addPost(authorId: ID!, input: EditedPost!): Post!
   updatePost(id: ID!, input: EditedPost!): Post!
-  addAuthor(name: String!): Author!
-  updateAuthor(id: ID!, name: String!): Author!
+  deletePost(id: ID!): Boolean!
+  addComment(authorId: ID!, postId: ID!, input: EditedComment!): Comment!
+  updateComment(id: ID!, input: EditedComment!): Comment!
+  deleteComment(id: ID!): Boolean!
+  addAuthor(name: String!, email: String!, bio: String, website: String): Author!
+  updateAuthor(id: ID!, name: String!, email: String!, bio: String, website: String): Author!
+  deleteAuthor(id: ID!): Boolean!
+  likePost(id: ID!): Post!
+  likeComment(id: ID!): Comment!
 }
